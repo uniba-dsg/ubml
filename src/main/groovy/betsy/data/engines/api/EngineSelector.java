@@ -2,7 +2,7 @@ package betsy.data.engines.api;
 
 public interface EngineSelector {
 
-    EngineHandle getEngineHandle(String name);
-    EngineHandle getMatchingEngine(ZipFileBpelWsdl zipFileBpelWsdl);
+    EngineManager getEngine(String name);
+    EngineManager getMatchingEngine(ZipFileBpelWsdl zipFileBpelWsdl);
 
 }

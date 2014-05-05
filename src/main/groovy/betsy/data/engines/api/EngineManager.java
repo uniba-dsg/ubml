@@ -1,7 +1,9 @@
 package betsy.data.engines.api;
 
 
-public interface EngineHandle {
+public interface EngineManager {
+
+    String getName();
 
     void install();
     void uninstall();

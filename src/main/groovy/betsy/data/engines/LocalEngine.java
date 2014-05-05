@@ -1,5 +1,8 @@
 package betsy.data.engines;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -14,4 +17,12 @@ public abstract class LocalEngine extends Engine implements LocalEngineAPI {
         return Paths.get("server").resolve(getName());
     }
 
+    @Override
+    public void uninstall() {
+        try {
+            FileUtils.deleteDirectory(getServerPath().toFile());
+        } catch (IOException e) {
+            throw new IllegalStateException("uninstall failed", e);
+        }
+    }
 }

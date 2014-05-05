@@ -8,6 +8,11 @@ public interface EngineLifecycle {
     void install();
 
     /**
+     * Uninstall the engine.
+     */
+    void uninstall();
+
+    /**
      * Start the engine and wait until it started.
      */
     void startup();
