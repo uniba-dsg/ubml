@@ -1,0 +1,55 @@
+apply plugin: "groovy"
+apply plugin: "idea"
+apply plugin: "eclipse"
+apply plugin: "application"
+
+// Main class of betsy
+mainClassName = "betsy.Main"
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src/main/groovy']
+        }
+        resources {
+            srcDirs = ['src/main/groovy', 'src/main/resources', 'src/main/xslt']
+        }
+    }
+}
+
+ext {
+    props = new Properties()
+    props.load(new File(project.rootDir, "config.properties").newInputStream())
+}
+
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.2.0'
+
+    compile 'log4j:log4j:1.2.17'
+    compile 'org.apache.commons:commons-io:1.3.2'
+    compile 'commons-lang:commons-lang:2.4'
+    compile 'org.apache.ant:ant-apache-log4j:1.9.2'
+
+    testCompile 'junit:junit:4.11'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.12'
+}
+
+task enginecontrol(type: JavaExec, dependsOn: build) {
+    description = 'Starts Engine Control GUI'
+    classpath = sourceSets.main.runtimeClasspath
+    main = "betsy.tool.EngineControl"
+}
+
+test {
+    testLogging {
+        exceptionFormat "full" // default is "short"
+    }
+}
