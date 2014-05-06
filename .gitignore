@@ -5,3 +5,4 @@ out/
 downloads/
 *.log
 server/
+.gradle/

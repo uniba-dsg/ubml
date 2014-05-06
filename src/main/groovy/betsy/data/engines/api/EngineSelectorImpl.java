@@ -1,5 +1,6 @@
 package betsy.data.engines.api;
 
+import betsy.data.engines.ode.Ode136Engine;
 import betsy.data.engines.ode.OdeEngine;
 
 import java.util.List;
@@ -10,6 +11,8 @@ public class EngineSelectorImpl implements EngineSelector {
     public EngineManager getEngine(String name) {
         if("ode".equals(name)) {
             return new EngineManagerImpl(new OdeEngine());
+        } else if("ode136".equals(name)){
+            return new EngineManagerImpl(new Ode136Engine());
         }
         return null;
     }
@@ -26,8 +29,7 @@ public class EngineSelectorImpl implements EngineSelector {
     }
 
     private List<String> getMatchingEngineByConformance(ZipFileBpelWsdl zipFileBpelWsdl) {
-        // TODO use joergs code for this by parsing the BPEL file and determining which engine supports which feature
-        return null;
+        return new bpp.executables.EngineSelector().getSupportingEngines(zipFileBpelWsdl.getBpelFile());
     }
 
 }
