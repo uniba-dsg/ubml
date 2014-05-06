@@ -46,7 +46,7 @@ public class EngineManagerImpl implements EngineManager {
 
     @Override
     public ZipFileLogs retrieveLogFiles() {
-        // TODO reuse engine.storeLogs logic
+        // TODO reuse engine.copyLogsIntoFolder logic
         return null;
     }
 }

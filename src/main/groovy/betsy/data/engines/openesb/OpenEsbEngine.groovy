@@ -16,15 +16,15 @@ class OpenEsbEngine extends LocalEngine {
     }
 
     @Override
-    String getEndpointUrl(BetsyProcess process) {
-        "${CHECK_URL}/${process.name}TestInterface"
+    String getEndpointUrl(String process) {
+        // "${CHECK_URL}/${process.name}TestInterface"
+        "${CHECK_URL}/${process}"
     }
 
     @Override
-    void storeLogs(BetsyProcess process) {
-        Path logsFolder = process.targetPath.resolve("logs")
-        FileTasks.mkdirs(logsFolder)
-        ant.copy(todir: logsFolder) {
+    void copyLogsIntoFolder(Path process) {
+        FileTasks.mkdirs(process)
+        ant.copy(todir: process) {
             ant.fileset(dir: glassfishHome.resolve("domains/domain1/logs/"))
         }
     }

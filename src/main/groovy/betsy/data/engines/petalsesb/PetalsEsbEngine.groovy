@@ -21,8 +21,9 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    String getEndpointUrl(BetsyProcess process) {
-        "$CHECK_URL/petals/services/${process.name}TestInterfaceService"
+    String getEndpointUrl(String process) {
+        // "$CHECK_URL/petals/services/${process.name}TestInterfaceService"
+        "$CHECK_URL/petals/services/${process}"
     }
 
     Path getPetalsFolder() {
@@ -46,9 +47,9 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    void storeLogs(BetsyProcess process) {
-        FileTasks.mkdirs(process.targetLogsPath)
-        ant.copy(file: petalsLogFile, todir: process.targetLogsPath)
+    void copyLogsIntoFolder(Path process) {
+        FileTasks.mkdirs(process)
+        ant.copy(file: petalsLogFile, todir: process)
     }
 
     @Override

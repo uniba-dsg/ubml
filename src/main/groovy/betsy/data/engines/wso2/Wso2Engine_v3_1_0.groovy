@@ -128,14 +128,15 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
     }
 
     @Override
-    String getEndpointUrl(BetsyProcess process) {
-        return "$CHECK_URL/services/${process.name}TestInterfaceService"
+    String getEndpointUrl(String process) {
+        // "$CHECK_URL/services/${process.name}TestInterfaceService"
+        "$CHECK_URL/services/${process}"
     }
 
     @Override
-    void storeLogs(BetsyProcess process) {
-        FileTasks.mkdirs(process.targetLogsPath)
-        ant.copy(todir: process.targetLogsPath) {
+    void copyLogsIntoFolder(Path process) {
+        FileTasks.mkdirs(process)
+        ant.copy(todir: process) {
             ant.fileset(dir: getLogsFolder())
         }
     }

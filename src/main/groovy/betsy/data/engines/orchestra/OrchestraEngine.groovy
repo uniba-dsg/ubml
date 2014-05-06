@@ -6,6 +6,8 @@ import betsy.data.engines.LocalEngine
 import betsy.data.engines.tomcat.Tomcat
 import betsy.tasks.FileTasks
 
+import java.nio.file.Path
+
 class OrchestraEngine extends LocalEngine {
 
     @Override
@@ -43,14 +45,15 @@ class OrchestraEngine extends LocalEngine {
     }
 
     @Override
-    String getEndpointUrl(BetsyProcess process) {
-        "${tomcat.tomcatUrl}/orchestra/${process.name}TestInterface"
+    String getEndpointUrl(String process) {
+        // "${tomcat.tomcatUrl}/orchestra/${process.name}TestInterface"
+        "${tomcat.tomcatUrl}/orchestra/${process}"
     }
 
     @Override
-    void storeLogs(BetsyProcess process) {
-        FileTasks.mkdirs(process.targetLogsPath)
-        ant.copy(todir: process.targetLogsPath) {
+    void copyLogsIntoFolder(Path process) {
+        FileTasks.mkdirs(process)
+        ant.copy(todir: process) {
             ant.fileset(dir: tomcat.tomcatLogsDir)
         }
     }

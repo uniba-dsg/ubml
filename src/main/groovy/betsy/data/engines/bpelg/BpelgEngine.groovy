@@ -20,9 +20,9 @@ class BpelgEngine extends LocalEngine {
     }
 
     @Override
-    void storeLogs(BetsyProcess process) {
-        FileTasks.mkdirs(process.targetLogsPath)
-        ant.copy(todir: process.targetLogsPath) {
+    void copyLogsIntoFolder(Path process) {
+        FileTasks.mkdirs(process)
+        ant.copy(todir: process) {
             ant.fileset(dir: tomcat.tomcatLogsDir)
         }
     }
@@ -38,8 +38,9 @@ class BpelgEngine extends LocalEngine {
     }
 
     @Override
-    String getEndpointUrl(BetsyProcess process) {
-        "${tomcat.tomcatUrl}/bpel-g/services/${process.name}TestInterfaceService"
+    String getEndpointUrl(String process) {
+        // "${tomcat.tomcatUrl}/bpel-g/services/${process.name}TestInterfaceService"
+        "${tomcat.tomcatUrl}/bpel-g/services/${process}"
     }
 
     Tomcat getTomcat() {

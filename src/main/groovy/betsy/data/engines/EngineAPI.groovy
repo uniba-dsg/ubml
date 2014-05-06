@@ -1,6 +1,8 @@
 package betsy.data.engines
 
-import betsy.data.BetsyProcess;
+import betsy.data.BetsyProcess
+
+import java.nio.file.Path;
 
 interface EngineAPI extends EngineLifecycle {
 
@@ -32,13 +34,13 @@ interface EngineAPI extends EngineLifecycle {
      * @param process the process
      * @return the url of the endpoint
      */
-    String getEndpointUrl(BetsyProcess process)
+    String getEndpointUrl(String serviceName)
 
     /**
      * Store logs used for a specific process. This is required for analysis in case of error.
      *
      * @param process the process for which to store the logs.
      */
-    void storeLogs(BetsyProcess process)
+    void copyLogsIntoFolder(Path targetFolder)
 
 }
