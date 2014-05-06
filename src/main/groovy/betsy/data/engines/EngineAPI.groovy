@@ -14,19 +14,20 @@ interface EngineAPI extends EngineLifecycle {
     String getName()
 
     /**
-     * Deploy the given <code>process</code> to the current engine.
+     * Deploy the given BPEL process to the current engine.
      * Deployment is always synchronous.
      *
-     * @param process to be deployed
+     * @param name the name of the BPEL process
+     * @param process the path to the archive to be deployed
      */
-    void deploy(BetsyProcess process)
+    void deploy(String name, Path process)
 
     /**
      * Build archives required for deployment.
      *
      * @param process the process for which the archives are being built
      */
-    void buildArchives(BetsyProcess process)
+    Path buildDeploymentArchive(BetsyProcess process)
 
     /**
      * Gets endpoint url of requested endpoint url. This url is used for testing the process later on.

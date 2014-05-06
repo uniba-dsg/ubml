@@ -2,7 +2,7 @@ package betsy.data.engines.bpelg
 
 import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
-import betsy.data.engines.Util
+
 import betsy.data.engines.tomcat.Tomcat
 import betsy.tasks.FileTasks
 
@@ -63,16 +63,16 @@ class BpelgEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(BetsyProcess process) {
-        new BpelgDeployer(processName: process.name,
-                packageFilePath: process.targetPackageFilePath,
+    void deploy(String name, Path process) {
+        new BpelgDeployer(processName: name,
+                packageFilePath: process, //.targetPackageFilePath,
                 deploymentDirPath: getDeploymentDir(),
                 logFilePath: tomcat.tomcatLogsDir.resolve("bpelg.log")
         ).deploy()
     }
 
     @Override
-    void buildArchives(BetsyProcess process) {
+    Path buildDeploymentArchive(BetsyProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // deployment descriptor
@@ -81,6 +81,9 @@ class BpelgEngine extends LocalEngine {
                 style: xsltPath.resolve("bpelg_bpel_to_deploy_xml.xsl"))
 
         // remove unimplemented methods
+
+        /*
+        TODO maybe use a workaround here?
         Util.computeMatchingPattern(process).each { pattern ->
             ant.copy(file: process.targetBpelPath.resolve("TestInterface.wsdl"),
                     tofile: process.targetTmpPath.resolve("TestInterface.wsdl.before_removing_${pattern}"))
@@ -90,6 +93,7 @@ class BpelgEngine extends LocalEngine {
                 param(name: "deletePattern", expression: pattern)
             }
         }
+        */
 
         // uniquify service name
         ant.replace(file: process.targetBpelPath.resolve("TestInterface.wsdl"),
@@ -102,6 +106,8 @@ class BpelgEngine extends LocalEngine {
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
+
+        return process.targetPackageFilePath
     }
 
 }

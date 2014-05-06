@@ -59,21 +59,23 @@ class OrchestraEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(BetsyProcess process) {
+    void deploy(String name, Path process) {
         new OrchestraDeployer(
                 orchestraHome: serverPath.resolve("orchestra-cxf-tomcat-4.9.0"),
-                packageFilePath: process.targetPackageFilePath,
+                packageFilePath: process, //.targetPackageFilePath,
                 antBinFolder: Configuration.antHome.resolve("bin").toAbsolutePath()
         ).deploy()
     }
 
-    public void buildArchives(BetsyProcess process) {
+    public Path buildDeploymentArchive(BetsyProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
         packageBuilder.replaceEndpointTokenWithValue(process)
         packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
+
+        return process.targetPackageFilePath
     }
 
 }

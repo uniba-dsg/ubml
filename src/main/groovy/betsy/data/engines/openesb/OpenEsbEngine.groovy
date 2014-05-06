@@ -4,6 +4,7 @@ import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 import betsy.tasks.FileTasks
 
+import java.nio.file.Files
 import java.nio.file.Path
 
 class OpenEsbEngine extends LocalEngine {
@@ -56,15 +57,15 @@ class OpenEsbEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(BetsyProcess process) {
+    void deploy(String name, Path process) {
         new OpenEsbDeployer(cli: cli,
-                processName: process.name,
-                packageFilePath: process.targetPackageCompositeFilePath,
-                tmpFolder: process.targetPath).deploy()
+                processName: name,
+                packageFilePath: process, //.targetPackageCompositeFilePath,
+                tmpFolder: Files.createTempDirectory("openesb-deploy")).deploy()
     }
 
     @Override
-    public void buildArchives(BetsyProcess process) {
+    public Path buildDeploymentArchive(BetsyProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
@@ -76,7 +77,7 @@ class OpenEsbEngine extends LocalEngine {
         packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
 
-        new OpenEsbCompositePackager(process: process).build()
+        return new OpenEsbCompositePackager(process: process).build()
     }
 
     void buildDeploymentDescriptor(BetsyProcess process) {

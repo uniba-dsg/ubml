@@ -78,14 +78,14 @@ class ActiveBpelEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(BetsyProcess process) {
+    void deploy(String name, Path process) {
         new ActiveBpelDeployer(deploymentDirPath: getDeploymentDir(),
                 logFilePath: getAeDeploymentLog(),
-                processName: process.name,
-                packageFilePath: process.getTargetPackageFilePath("bpr")).deploy()
+                processName: name,
+                packageFilePath: process).deploy() // process.getTargetPackageFilePath("bpr")
     }
 
-    public void buildArchives(BetsyProcess process) {
+    public Path buildDeploymentArchive(BetsyProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // create deployment descriptor
@@ -100,6 +100,8 @@ class ActiveBpelEngine extends LocalEngine {
 
         // create bpr file
         ant.move(file: process.targetPackageFilePath, toFile: process.getTargetPackageFilePath("bpr"))
+
+        return process.getTargetPackageFilePath("bpr");
     }
 
 }

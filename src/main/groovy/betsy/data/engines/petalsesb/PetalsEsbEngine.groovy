@@ -91,9 +91,9 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(BetsyProcess process) {
-        new PetalsEsbDeployer(processName: process.name,
-                packageFilePath: process.targetPackageCompositeFilePath,
+    void deploy(String name, Path process) {
+        new PetalsEsbDeployer(processName: name,
+                packageFilePath: process, //.targetPackageCompositeFilePath,
                 logFilePath: petalsLogFile,
                 deploymentDirPath: getInstallationDir()
         ).deploy()
@@ -104,7 +104,7 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    void buildArchives(BetsyProcess process) {
+    Path buildDeploymentArchive(BetsyProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
@@ -127,7 +127,7 @@ class PetalsEsbEngine extends LocalEngine {
         packageBuilder.replacePartnerTokenWithValue(process)
         packageBuilder.bpelFolderToZipFile(process)
 
-        new PetalsEsbCompositePackager(process: process).build()
+        return new PetalsEsbCompositePackager(process: process).build()
     }
 
     @Override

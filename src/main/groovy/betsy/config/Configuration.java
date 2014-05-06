@@ -36,6 +36,10 @@ public class Configuration {
         return Paths.get(properties.getProperty("downloads.dir"));
     }
 
+    public static Path getAntHome() {
+        return Paths.get(properties.getProperty("ant.home"));
+    }
+
     static {
 
         try (BufferedReader reader = Files.newBufferedReader(Paths.get("config.properties"), StandardCharsets.UTF_8)) {

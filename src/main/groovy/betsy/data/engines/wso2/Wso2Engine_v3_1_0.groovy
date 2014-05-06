@@ -95,8 +95,9 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
     }
 
     @Override
-    void deploy(BetsyProcess process) {
-        copy(process.getTargetPackageFilePath(), getDeploymentDir().resolve(process.getTargetPackageFilePath().getFileName()))
+    void deploy(String name, Path process) {
+        //opy(process.getTargetPackageFilePath(), getDeploymentDir().resolve(process.getTargetPackageFilePath().getFileName()))
+        copy(process, getDeploymentDir().resolve(process.getFileName()))
 
         ant.waitfor(maxwait: "60", maxwaitunit: "second", checkevery: "500") {
             and {
@@ -113,7 +114,7 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
     }
 
     @Override
-    void buildArchives(BetsyProcess process) {
+    Path buildDeploymentArchive(BetsyProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
@@ -125,6 +126,8 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
         packageBuilder.replacePartnerTokenWithValue(process)
 
         packageBuilder.bpelFolderToZipFile(process)
+
+        return process.targetPackageFilePath
     }
 
     @Override

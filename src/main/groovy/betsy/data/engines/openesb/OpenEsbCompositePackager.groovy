@@ -11,9 +11,11 @@ class OpenEsbCompositePackager {
     final AntBuilder ant = AntUtil.builder()
     BetsyProcess process
 
-    void build() {
+    Path build() {
         createBinding()
         createComposite()
+
+        return process.targetPackageCompositeFilePath
     }
 
     private void createComposite() {

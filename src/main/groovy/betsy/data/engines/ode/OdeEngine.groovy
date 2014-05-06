@@ -52,16 +52,16 @@ class OdeEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(BetsyProcess process) {
-        new OdeDeployer(processName: process.name,
+    void deploy(String name, Path process) {
+        new OdeDeployer(processName: name,
                 logFilePath: tomcat.tomcatLogsDir.resolve("ode.log"),
                 deploymentDirPath: getDeploymentDir(),
-                packageFilePath: process.targetPackageFilePath
+                packageFilePath: process //.targetPackageFilePath
         ).deploy()
     }
 
     @Override
-    void buildArchives(BetsyProcess process) {
+    Path buildDeploymentArchive(BetsyProcess process) {
         packageBuilder.createFolderAndCopyProcessFilesToTarget(process)
 
         // engine specific steps
@@ -73,6 +73,8 @@ class OdeEngine extends LocalEngine {
         packageBuilder.replacePartnerTokenWithValue(process)
 
         packageBuilder.bpelFolderToZipFile(process)
+
+        return process.targetPackageFilePath
     }
 
     @Override

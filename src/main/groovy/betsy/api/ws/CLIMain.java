@@ -1,11 +1,8 @@
 package betsy.api.ws;
 
-import betsy.api.impl.UniformEngineLogfileAccessImpl;
+import betsy.api.impl.*;
 import betsy.api.model.*;
 import betsy.api.helper.IdHelper;
-import betsy.api.impl.UniformEngineLifecycleImpl;
-import betsy.api.impl.UniformEngineProvisionerImpl;
-import betsy.api.impl.UniformEngineSelectorImpl;
 import betsy.api.helper.ZipFileHelper;
 import betsy.tasks.WaitTasks;
 import bpp.executables.EngineSelector;
@@ -24,10 +21,35 @@ public class CLIMain {
     public static final Path SEQUENCE_FOLDER = Paths.get("testdata/Sequence");
 
     public static void main(String[] args) throws IOException {
-        testBppEngineSelector();
-        testUniformEngineSelector();
+        //testBppEngineSelector();
+        //testUniformEngineSelector();
         //testProvisioningAndLifecycle();
-        testLogPackages();
+        //testLogPackages();
+
+        testDeployment();
+    }
+
+    private static void testDeployment() throws IOException {
+        EngineId engineId = new EngineId();
+        engineId.setEngineId("bpelg");
+
+        UniformEngineProvisioner provisioner = new UniformEngineProvisionerImpl();
+        if(!provisioner.isInstalled(engineId)) {
+            provisioner.install(engineId);
+        }
+        UniformEngineLifecycle engineLifecycle = new UniformEngineLifecycleImpl();
+        if(!engineLifecycle.isRunning(engineId)) {
+            engineLifecycle.start(engineId);
+        }
+
+        UniformProcessDeployment processDeployment = new UniformProcessDeploymentImpl();
+        DeployableBpelPackage deployableBpelPackage = processDeployment.makeDeployable(engineId, ZipFileHelper.zipToBpel(ZipFileHelper.buildFromFolder(SEQUENCE_FOLDER)));
+        System.out.println("Created deployable package");
+        System.out.println("Deployed process: " + IdHelper.toString(processDeployment.deploy(engineId, deployableBpelPackage)));
+
+        if(engineLifecycle.isRunning(engineId)) {
+            engineLifecycle.stop(engineId);
+        }
     }
 
     private static void testLogPackages() throws IOException {
