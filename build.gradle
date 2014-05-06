@@ -35,6 +35,8 @@ dependencies {
     compile 'commons-lang:commons-lang:2.4'
     compile 'org.apache.ant:ant-apache-log4j:1.9.2'
 
+    compile 'net.sf.saxon:Saxon-HE:9.5.1-5'
+
     compile files(fileTree(dir: "lib", includes: ['*.jar']))
 
     testCompile 'junit:junit:4.11'
