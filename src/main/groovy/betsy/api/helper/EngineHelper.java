@@ -1,6 +1,6 @@
 package betsy.api.helper;
 
-import betsy.api.EngineId;
+import betsy.api.model.EngineId;
 import betsy.data.engines.LocalEngine;
 import betsy.data.engines.activebpel.ActiveBpelEngine;
 import betsy.data.engines.bpelg.BpelgEngine;
@@ -22,9 +22,6 @@ import betsy.data.engines.wso2.Wso2Engine_v3_1_0;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by sh on 5/6/2014.
- */
 public class EngineHelper {
     public static LocalEngine getLocalEngine(EngineId engineId) {
         return getAllEngines().stream().filter(s -> s.getName().equals(engineId.getEngineId())).findFirst().

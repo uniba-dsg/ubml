@@ -1,8 +1,8 @@
 package betsy.api.impl;
 
-import betsy.api.BpelPackage;
-import betsy.api.EngineId;
-import betsy.api.UniformEngineSelector;
+import betsy.api.model.BpelPackage;
+import betsy.api.model.EngineId;
+import betsy.api.model.UniformEngineSelector;
 import betsy.api.helper.EngineHelper;
 import betsy.api.helper.ZipFileHelper;
 import betsy.data.engines.Engine;

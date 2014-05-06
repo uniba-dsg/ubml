@@ -1,10 +1,8 @@
 package betsy.api.ws;
 
-import betsy.api.EngineId;
-import betsy.api.UniformEngineLifecycle;
-import betsy.api.UniformEngineProvisioner;
+import betsy.api.impl.UniformEngineLogfileAccessImpl;
+import betsy.api.model.*;
 import betsy.api.helper.IdHelper;
-import betsy.api.UniformEngineSelector;
 import betsy.api.impl.UniformEngineLifecycleImpl;
 import betsy.api.impl.UniformEngineProvisionerImpl;
 import betsy.api.impl.UniformEngineSelectorImpl;
@@ -13,9 +11,11 @@ import betsy.tasks.WaitTasks;
 import bpp.executables.EngineSelector;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class CLIMain {
 
@@ -26,7 +26,25 @@ public class CLIMain {
     public static void main(String[] args) throws IOException {
         testBppEngineSelector();
         testUniformEngineSelector();
-        testProvisioningAndLifecycle();
+        //testProvisioningAndLifecycle();
+        testLogPackages();
+    }
+
+    private static void testLogPackages() throws IOException {
+        EngineId ode = new EngineId();
+        ode.setEngineId("ode");
+
+        UniformEngineProvisioner provisioner = new UniformEngineProvisionerImpl();
+        provisioner.install(ode);
+        UniformEngineLifecycle engineLifecycle = new UniformEngineLifecycleImpl();
+        engineLifecycle.start(ode);
+        engineLifecycle.stop(ode);
+
+        UniformEngineLogfileAccess logfileAccess = new UniformEngineLogfileAccessImpl();
+        LogPackage logPackage = logfileAccess.retrieveLogFiles(ode);
+
+        Path path = ZipFileHelper.extractIntoTemporaryFolder(logPackage);
+        Files.find(path, 10, (s, a) -> true).forEach(System.out::println);
     }
 
     private static void testProvisioningAndLifecycle() {

@@ -1,4 +1,4 @@
-package betsy.api
+package betsy.api.model
 
 class EngineId                     { String engineId;   }
 class ProcessId  extends EngineId  { String processId;  }

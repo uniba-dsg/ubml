@@ -1,7 +1,8 @@
 package betsy.api.helper;
 
-import betsy.api.BpelPackage;
-import betsy.api.ZipFile;
+import betsy.api.model.BpelPackage;
+import betsy.api.model.LogPackage;
+import betsy.api.model.ZipFile;
 import betsy.tasks.ZipTasks;
 
 import java.io.IOException;
@@ -20,6 +21,12 @@ public class ZipFileHelper {
 
     public static BpelPackage zipToBpel(ZipFile zipFile) {
         BpelPackage result = new BpelPackage();
+        result.setData(zipFile.getData());
+        return result;
+    }
+
+    public static LogPackage zipToLog(ZipFile zipFile) {
+        LogPackage result = new LogPackage();
         result.setData(zipFile.getData());
         return result;
     }

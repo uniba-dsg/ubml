@@ -1,8 +1,8 @@
 package betsy.api.helper;
 
-import betsy.api.EngineId;
-import betsy.api.InstanceId;
-import betsy.api.ProcessId;
+import betsy.api.model.EngineId;
+import betsy.api.model.InstanceId;
+import betsy.api.model.ProcessId;
 
 import java.util.stream.Stream;
 

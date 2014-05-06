@@ -1,7 +1,7 @@
 package betsy.api.impl;
 
-import betsy.api.EngineId;
-import betsy.api.UniformEngineLifecycle;
+import betsy.api.model.EngineId;
+import betsy.api.model.UniformEngineLifecycle;
 import betsy.api.helper.EngineHelper;
 
 import javax.jws.WebService;
