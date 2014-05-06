@@ -1,5 +1,6 @@
-package betsy.data.engines.api;
+package betsy.api.helper;
 
+import betsy.api.EngineId;
 import betsy.data.engines.LocalEngine;
 import betsy.data.engines.activebpel.ActiveBpelEngine;
 import betsy.data.engines.bpelg.BpelgEngine;
@@ -21,10 +22,16 @@ import betsy.data.engines.wso2.Wso2Engine_v3_1_0;
 import java.util.LinkedList;
 import java.util.List;
 
-public class EngineSelectorImpl implements EngineSelector {
+/**
+ * Created by sh on 5/6/2014.
+ */
+public class EngineHelper {
+    public static LocalEngine getLocalEngine(EngineId engineId) {
+        return getAllEngines().stream().filter(s -> s.getName().equals(engineId.getEngineId())).findFirst().
+                orElseThrow(() -> new IllegalStateException("could not find the engine with the id " + IdHelper.toString(engineId)));
+    }
 
-    @Override
-    public EngineManager getEngine(String name) {
+    public static List<LocalEngine> getAllEngines() {
         List<LocalEngine> engines = new LinkedList<>();
         engines.add(new Ode136Engine());
         engines.add(new Ode136InMemoryEngine());
@@ -48,29 +55,6 @@ public class EngineSelectorImpl implements EngineSelector {
         engines.add(new Wso2Engine_v3_1_0());
         engines.add(new Wso2Engine_v3_0_0());
         engines.add(new Wso2Engine_v2_1_2());
-
-        for(LocalEngine localEngine : engines) {
-            if(localEngine.getName().equals(name)) {
-                return new EngineManagerImpl(localEngine);
-            }
-        }
-
-        throw new IllegalArgumentException("could not find engine with name " + name);
+        return engines;
     }
-
-    @Override
-    public EngineManager getMatchingEngine(ZipFileBpelWsdl zipFileBpelWsdl) {
-        List<String> matchedEngines = getMatchingEngineByConformance(zipFileBpelWsdl);
-
-        if(matchedEngines.isEmpty()) {
-            throw new RuntimeException("no engine found for this process. At least one of the activities in the given process is not supported.");
-        }
-
-        return getEngine(matchedEngines.get(0));
-    }
-
-    private List<String> getMatchingEngineByConformance(ZipFileBpelWsdl zipFileBpelWsdl) {
-        return new bpp.executables.EngineSelector().getSupportingEngines(zipFileBpelWsdl.getBpelFile());
-    }
-
 }

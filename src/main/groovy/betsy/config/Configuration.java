@@ -36,10 +36,6 @@ public class Configuration {
         return Paths.get(properties.getProperty("downloads.dir"));
     }
 
-    public static Path getAntHome() {
-        return Paths.get(properties.getProperty("ant.home"));
-    }
-
     static {
 
         try (BufferedReader reader = Files.newBufferedReader(Paths.get("config.properties"), StandardCharsets.UTF_8)) {
@@ -56,64 +52,4 @@ public class Configuration {
 
     public static Properties properties;
 
-    /**
-     * Get the File where VirtualBox is installed in.
-     *
-     * @return directory file
-     */
-    public static Path getVboxHome() {
-        Path vboxHomePath = Paths.get(properties.getProperty("virtual.vbox.home"));
-
-        if (!Files.isDirectory(vboxHomePath)) {
-            throw new ConfigurationException("Found [" + vboxHomePath + "] for key [virtual.vbox.home] " + "Path to VirtualBox directory");
-        }
-
-        return vboxHomePath;
-    }
-
-    /**
-     * Get the VirtualBox Manage File
-     *
-     * @return file of VirtualBox Manage
-     */
-    public static Path getVBoxManage() {
-        if (SystemUtils.IS_OS_WINDOWS) {
-            return getVboxHome().resolve("VBoxManage.exe");
-        } else if (SystemUtils.IS_OS_UNIX) {
-            return getVboxHome().resolve("VBoxManage");
-        } else {
-            throw new IllegalStateException("Incompatible OS running");
-        }
-    }
-
-    /**
-     * Get the VirtualBox WebService File
-     *
-     * @return file of VirtualBox WebService
-     */
-    public static Path getVBoxWebSrv() {
-        if (SystemUtils.IS_OS_WINDOWS) {
-            return getVboxHome().resolve("VBoxWebSrv.exe");
-        } else if (SystemUtils.IS_OS_UNIX) {
-            return getVboxHome().resolve("vboxwebsrv");
-        } else {
-            throw new IllegalStateException("Incompatible OS running");
-        }
-    }
-
-    public static boolean useRunningVM() {
-        return Boolean.valueOf(properties.getProperty("virtual.useRunningVM"));
-    }
-
-    public static Path getVirtualDownloadDir() {
-        return Paths.get("vm_download");
-    }
-
-    public static Integer getTimeToStartVboxWebService() {
-        return Integer.parseInt(properties.getProperty("virtual.vbox.websrv.wait"));
-    }
-
-    public static void setPartnerIpAndPort(String newPartnerAddress) {
-        properties.setProperty("partner.ipAndPort", newPartnerAddress);
-    }
 }

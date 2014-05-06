@@ -30,7 +30,7 @@ class BetsyProcess implements Cloneable, Comparable {
     }
 
     String getEndpoint() {
-        getEngine().getEndpointUrl(this)
+        getEngine().getEndpointUrl(this.name)
     }
 
     String getWsdlEndpoint() {
