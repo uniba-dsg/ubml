@@ -31,7 +31,7 @@ public class CLIMain {
 
     private static void testDeployment() throws IOException {
         EngineId engineId = new EngineId();
-        engineId.setEngineId("bpelg");
+        engineId.setEngineId("ode");
 
         UniformEngineProvisioner provisioner = new UniformEngineProvisionerImpl();
         if(!provisioner.isInstalled(engineId)) {

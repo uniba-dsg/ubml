@@ -4,8 +4,8 @@ class EngineId                     { String engineId;   }
 class ProcessId  extends EngineId  { String processId;  }
 class InstanceId extends ProcessId { String instanceId; }
 class ZipFile { byte[] data; }
-class BpelPackage extends ZipFile {}
-class DeployableBpelPackage extends ZipFile {}
+class BpelPackage extends ZipFile { }
+class DeployableBpelPackage extends BpelPackage {}
 class LogPackage extends ZipFile {}
 class EndpointReference { String url; }
 

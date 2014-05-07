@@ -5,7 +5,10 @@ import betsy.api.helper.ZipFileHelper;
 import betsy.api.model.*;
 import betsy.data.BetsyProcess;
 import betsy.data.engines.LocalEngine;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,8 +21,7 @@ public class UniformProcessDeploymentImpl implements UniformProcessDeployment {
             Path file = ZipFileHelper.storeDataAsZipFile(bpelPackage);
             LocalEngine engine = EngineHelper.getLocalEngine(engineId);
 
-            //TODO determine bpel file name?
-            String bpelName = "TOBEREPLACED";
+            String bpelName = ZipFileHelper.findBpelProcessNameInPath(ZipFileHelper.extractIntoTemporaryFolder(bpelPackage));
             engine.deploy(bpelName, file);
 
             ProcessId result = new ProcessId();
@@ -27,7 +29,7 @@ public class UniformProcessDeploymentImpl implements UniformProcessDeployment {
             result.setProcessId(bpelName);
 
             return result;
-        } catch (IOException e) {
+        } catch (IOException | SAXException | ParserConfigurationException | XPathExpressionException e) {
             throw new RuntimeException("errors in io", e);
         }
 
@@ -38,6 +40,8 @@ public class UniformProcessDeploymentImpl implements UniformProcessDeployment {
         LocalEngine engine = EngineHelper.getLocalEngine(engineId);
         try {
             Path folder  = ZipFileHelper.extractIntoTemporaryFolder(bpelPackage);
+
+            ZipFileHelper.adjustFileNameOfBpelToProcessName(folder);
             Path bpelFile = ZipFileHelper.findBpelFileInPath(folder);
 
             BetsyProcess process = new BetsyProcess();
@@ -49,7 +53,7 @@ public class UniformProcessDeploymentImpl implements UniformProcessDeployment {
 
             Path deployableArchivePath = engine.buildDeploymentArchive(process);
             return ZipFileHelper.zipToDeployableBpel(ZipFileHelper.createZipFileFromArchive(deployableArchivePath));
-        } catch (IOException e) {
+        } catch (IOException | SAXException | ParserConfigurationException | XPathExpressionException  e) {
             throw new RuntimeException("error due to io", e);
         }
     }
