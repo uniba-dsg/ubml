@@ -4,6 +4,7 @@ import betsy.data.BetsyProcess
 import betsy.data.engines.LocalEngine
 import betsy.tasks.FileTasks
 
+import javax.xml.namespace.QName
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -28,6 +29,16 @@ class OpenEsbEngine extends LocalEngine {
         ant.copy(todir: process) {
             ant.fileset(dir: glassfishHome.resolve("domains/domain1/logs/"))
         }
+    }
+
+    @Override
+    void undeploy(QName processId) {
+
+    }
+
+    @Override
+    boolean isDeployed(QName name) {
+        return false
     }
 
     OpenEsbCLI getCli() {
@@ -57,9 +68,9 @@ class OpenEsbEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(String name, Path process) {
+    void deploy(QName name, Path process) {
         new OpenEsbDeployer(cli: cli,
-                processName: name,
+                processName: name.getLocalPart(),
                 packageFilePath: process, //.targetPackageCompositeFilePath,
                 tmpFolder: Files.createTempDirectory("openesb-deploy")).deploy()
     }
@@ -96,7 +107,7 @@ class OpenEsbEngine extends LocalEngine {
 
     @Override
     boolean isRunning() {
-        return false;
+        return isUrlAvailable(CHECK_URL);
     }
 
 }

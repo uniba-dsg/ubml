@@ -5,6 +5,7 @@ import betsy.data.engines.LocalEngine
 import betsy.data.engines.tomcat.Tomcat
 import betsy.tasks.FileTasks
 
+import javax.xml.namespace.QName
 import java.nio.file.Path
 
 class OdeEngine extends LocalEngine {
@@ -47,13 +48,29 @@ class OdeEngine extends LocalEngine {
     }
 
     @Override
+    void undeploy(QName name) {
+        new OdeDeployer(processName: name.getLocalPart(),
+                logFilePath: tomcat.tomcatLogsDir.resolve("ode.log"),
+                deploymentDirPath: getDeploymentDir()
+        ).undeploy()
+    }
+
+    @Override
+    boolean isDeployed(QName name) {
+        return new OdeDeployer(processName: name.getLocalPart(),
+                logFilePath: tomcat.tomcatLogsDir.resolve("ode.log"),
+                deploymentDirPath: getDeploymentDir()
+        ).isDeployed()
+    }
+
+    @Override
     void install() {
         new OdeInstaller(serverDir: getServerPath()).install()
     }
 
     @Override
-    void deploy(String name, Path process) {
-        new OdeDeployer(processName: name,
+    void deploy(QName name, Path process) {
+        new OdeDeployer(processName: name.getLocalPart(),
                 logFilePath: tomcat.tomcatLogsDir.resolve("ode.log"),
                 deploymentDirPath: getDeploymentDir(),
                 packageFilePath: process //.targetPackageFilePath

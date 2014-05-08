@@ -6,6 +6,7 @@ import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
 import org.apache.log4j.Logger
 
+import java.nio.file.Files
 import java.nio.file.Path
 
 class OdeDeployer implements EngineDeployer {
@@ -48,12 +49,19 @@ class OdeDeployer implements EngineDeployer {
 
     @Override
     void undeploy() {
+        log.info "UNDEPLOYING " + this.toString()
 
+        FileTasks.deleteDirectory(deploymentDirPath.resolve(processName))
+        FileTasks.deleteFile(getDeploymentIndicator())
+    }
+
+    private Path getDeploymentIndicator() {
+        deploymentDirPath.resolve("${processName}.deployed")
     }
 
     @Override
     boolean isDeployed() {
-        return false
+        return Files.exists(getDeploymentIndicator())
     }
 
     @Override

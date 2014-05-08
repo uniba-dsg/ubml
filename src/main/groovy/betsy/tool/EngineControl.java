@@ -6,6 +6,9 @@ import betsy.data.engines.EngineLifecycle;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
@@ -41,7 +44,7 @@ public class EngineControl extends JFrame {
 
         final List<EngineAPI> engines = EngineHelper.getEngineAPIs();
 
-        int buttons = 6;
+        int buttons = 7;
         int columns = 1 + buttons;
         int rows = engines.size() + 2; // one empty, one for all
         panel.setLayout(new GridLayout(rows, columns, 0, 10));
@@ -56,6 +59,21 @@ public class EngineControl extends JFrame {
             panel.add(createButton("startup", engine, engine::startup));
             panel.add(createButton("shutdown", engine, engine::shutdown));
             panel.add(createButton("isStarted?", engine, () -> toast(engine.getName() + " is " + (engine.isRunning() ? "started" : "shutdown"))));
+
+            panel.add(createButton("accessLogs", engine, () -> {
+                Path path = null;
+                try {
+                    path = Files.createTempDirectory("logs");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                engine.copyLogsIntoFolder(path);
+                try {
+                    Desktop.getDesktop().open(path.toFile());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }));
         }
 
         addEmptyRow(panel, columns);

@@ -2,6 +2,7 @@ package betsy.data.engines.wso2
 
 import betsy.tasks.FileTasks
 
+import javax.xml.namespace.QName
 import java.nio.file.Path
 
 class Wso2Engine_v2_1_2 extends Wso2Engine_v3_1_0 {

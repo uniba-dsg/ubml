@@ -6,6 +6,7 @@ import betsy.data.engines.tomcat.Tomcat
 import betsy.tasks.FileTasks
 import org.apache.log4j.Logger
 
+import javax.xml.namespace.QName
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -45,6 +46,16 @@ class ActiveBpelEngine extends LocalEngine {
         ant.copy(file: getAeDeploymentLog(), todir: process)
     }
 
+    @Override
+    void undeploy(QName processId) {
+
+    }
+
+    @Override
+    boolean isDeployed(QName name) {
+        return false
+    }
+
     private static Path getAeDeploymentLog() {
         String homeDir = System.getProperty("user.home");
         homeDir = homeDir.endsWith(File.separator) ?: homeDir + File.separator;
@@ -78,10 +89,10 @@ class ActiveBpelEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(String name, Path process) {
+    void deploy(QName name, Path process) {
         new ActiveBpelDeployer(deploymentDirPath: getDeploymentDir(),
                 logFilePath: getAeDeploymentLog(),
-                processName: name,
+                processName: name.getLocalPart(),
                 packageFilePath: process).deploy() // process.getTargetPackageFilePath("bpr")
     }
 

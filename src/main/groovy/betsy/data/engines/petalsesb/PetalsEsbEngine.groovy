@@ -6,6 +6,7 @@ import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
 import org.apache.log4j.Logger
 
+import javax.xml.namespace.QName
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -53,6 +54,16 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
+    void undeploy(QName processId) {
+
+    }
+
+    @Override
+    boolean isDeployed(QName name) {
+        return false
+    }
+
+    @Override
     void startup() {
         ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(petalsBinFolder, "petals-esb.bat"))
 
@@ -91,7 +102,7 @@ class PetalsEsbEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(String name, Path process) {
+    void deploy(QName name, Path process) {
         new PetalsEsbDeployer(processName: name,
                 packageFilePath: process, //.targetPackageCompositeFilePath,
                 logFilePath: petalsLogFile,
@@ -132,16 +143,7 @@ class PetalsEsbEngine extends LocalEngine {
 
     @Override
     boolean isRunning() {
-        try {
-            ant.fail(message: "server for engine ${this} is still running") {
-                condition() {
-                    http url: CHECK_URL
-                }
-            }
-            return false;
-        } catch (Exception ignore) {
-            return true;
-        }
+        return isUrlAvailable(CHECK_URL);
     }
 
 }

@@ -13,7 +13,7 @@ class OpenEsbDeployer implements EngineDeployer{
     Path tmpFolder
 
     public void deploy() {
-        cli.forceRedeploy(processName, packageFilePath, tmpFolder)
+        cli.deploy(processName, packageFilePath, tmpFolder)
     }
 
     @Override

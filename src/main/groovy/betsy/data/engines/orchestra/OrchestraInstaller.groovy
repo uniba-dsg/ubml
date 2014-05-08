@@ -31,7 +31,7 @@ class OrchestraInstaller {
         ant.unzip src: Configuration.downloadsDir.resolve(fileName), dest: serverDir
 
         ant.propertyfile(file: installDir.resolve("conf").resolve("install.properties")) {
-            entry key: "catalina.home", value: "../apache-tomcat-7.0.26"
+            entry key: "catalina.home", value: "../apache-tomcat-7.0.53"
         }
 
         ant.ant target: "install", dir: installDir

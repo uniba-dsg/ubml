@@ -1,5 +1,6 @@
 package betsy.data.engines.petalsesb
 
+import javax.xml.namespace.QName
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -8,6 +9,16 @@ class PetalsEsb41Engine extends PetalsEsbEngine {
     @Override
     String getName() {
         "petalsesb41"
+    }
+
+    @Override
+    void undeploy(QName processId) {
+
+    }
+
+    @Override
+    boolean isDeployed(QName name) {
+        return false
     }
 
     String getPetalsFolderName() {

@@ -4,6 +4,7 @@ import ant.tasks.AntUtil
 import betsy.data.BetsyProcess
 import betsy.tasks.FileTasks
 
+import javax.xml.namespace.QName
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -53,5 +54,18 @@ abstract class Engine implements EngineAPI {
     int hashCode() {
         return (getName() != null ? getName().hashCode() : 0)
     }
-	
+
+    public boolean isUrlAvailable(String url) {
+        try {
+            ant.fail(message: "server for engine ${this} is still running") {
+                condition() {
+                    http url: url
+                }
+            }
+            return false;
+        } catch (Exception ignore) {
+            return true;
+        }
+    }
+
 }

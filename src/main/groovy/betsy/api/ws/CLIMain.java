@@ -6,7 +6,10 @@ import betsy.api.helper.IdHelper;
 import betsy.api.helper.ZipFileHelper;
 import betsy.tasks.WaitTasks;
 import bpp.executables.EngineSelector;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,14 +23,12 @@ public class CLIMain {
     public static final Path VALIDATE_FOLDER = Paths.get("testdata/Validate");
     public static final Path SEQUENCE_FOLDER = Paths.get("testdata/Sequence");
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         //testBppEngineSelector();
         //testUniformEngineSelector();
         //testProvisioningAndLifecycle();
         //testLogPackages();
 
-        testDeployment(SEQUENCE_FOLDER);
-        testDeployment(VALIDATE_FOLDER);
         testDeployment(SEQUENCE_FOLDER);
     }
 
@@ -35,19 +36,26 @@ public class CLIMain {
         EngineId engineId = new EngineId();
         engineId.setEngineId("ode");
 
-        UniformEngineProvisioner provisioner = new UniformEngineProvisionerImpl();
-        if(!provisioner.isInstalled(engineId)) {
-            provisioner.install(engineId);
-        }
         UniformEngineLifecycle engineLifecycle = new UniformEngineLifecycleImpl();
-        if(!engineLifecycle.isRunning(engineId)) {
-            engineLifecycle.start(engineId);
+        if(engineLifecycle.isRunning(engineId)) {
+            engineLifecycle.stop(engineId);
         }
+
+        UniformEngineProvisioner provisioner = new UniformEngineProvisionerImpl();
+        provisioner.install(engineId);
+        engineLifecycle.start(engineId);
 
         UniformProcessDeployment processDeployment = new UniformProcessDeploymentImpl();
         DeployableBpelPackage deployableBpelPackage = processDeployment.makeDeployable(engineId, ZipFileHelper.zipToBpel(ZipFileHelper.buildFromFolder(folder)));
         System.out.println("Created deployable package");
-        System.out.println("Deployed process: " + IdHelper.toString(processDeployment.deploy(engineId, deployableBpelPackage)));
+        ProcessId processId = processDeployment.deploy(engineId, deployableBpelPackage);
+        System.out.println("Deployed process: " + IdHelper.toString(processId));
+
+        WaitTasks.sleep(2000);
+
+        System.out.println("Is deployed?: " + processDeployment.isProcessDeployed(processId));
+        processDeployment.undeploy(processId);
+        System.out.println("Is deployed?: " + processDeployment.isProcessDeployed(processId));
     }
 
     private static void testLogPackages() throws IOException {

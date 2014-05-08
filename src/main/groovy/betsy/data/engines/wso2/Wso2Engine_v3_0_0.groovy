@@ -1,5 +1,6 @@
 package betsy.data.engines.wso2
 
+import javax.xml.namespace.QName
 import java.nio.file.Path
 
 class Wso2Engine_v3_0_0 extends Wso2Engine_v3_1_0 {

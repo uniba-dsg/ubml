@@ -6,6 +6,7 @@ import betsy.data.engines.LocalEngine
 import betsy.data.engines.tomcat.Tomcat
 import betsy.tasks.FileTasks
 
+import javax.xml.namespace.QName
 import java.nio.file.Path
 
 class OrchestraEngine extends LocalEngine {
@@ -55,16 +56,33 @@ class OrchestraEngine extends LocalEngine {
         FileTasks.mkdirs(process)
         ant.copy(todir: process) {
             ant.fileset(dir: tomcat.tomcatLogsDir)
+            ant.fileset(dir: orchestraHome) {
+                include(name: "error.txt")
+            }
         }
     }
 
     @Override
-    void deploy(String name, Path process) {
+    void undeploy(QName processId) {
+
+    }
+
+    @Override
+    boolean isDeployed(QName name) {
+        return false
+    }
+
+    @Override
+    void deploy(QName name, Path process) {
         new OrchestraDeployer(
-                orchestraHome: serverPath.resolve("orchestra-cxf-tomcat-4.9.0"),
+                orchestraHome: getOrchestraHome(),
                 packageFilePath: process, //.targetPackageFilePath,
                 antBinFolder: Configuration.antHome.resolve("bin").toAbsolutePath()
         ).deploy()
+    }
+
+    public Path getOrchestraHome() {
+        serverPath.resolve("orchestra-cxf-tomcat-4.9.0")
     }
 
     public Path buildDeploymentArchive(BetsyProcess process) {

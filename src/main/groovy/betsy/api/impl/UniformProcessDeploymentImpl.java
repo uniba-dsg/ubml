@@ -7,6 +7,7 @@ import betsy.data.BetsyProcess;
 import betsy.data.engines.LocalEngine;
 import org.xml.sax.SAXException;
 
+import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
@@ -21,18 +22,22 @@ public class UniformProcessDeploymentImpl implements UniformProcessDeployment {
             Path file = ZipFileHelper.storeDataAsZipFile(bpelPackage);
             LocalEngine engine = EngineHelper.getLocalEngine(engineId);
 
-            String bpelName = ZipFileHelper.findBpelProcessNameInPath(ZipFileHelper.extractIntoTemporaryFolder(bpelPackage));
-            engine.deploy(bpelName, file);
+            Path extractedPath = ZipFileHelper.extractIntoTemporaryFolder(bpelPackage);
+            String bpelName = ZipFileHelper.findBpelProcessNameInPath(extractedPath);
+            String bpelNamespace = ZipFileHelper.findBpelTargetNameSpaceInPath(extractedPath);
+            QName processId = new QName(bpelNamespace, bpelName);
+            engine.deploy(processId, file);
+
+            System.out.println("FOUND " + processId);
 
             ProcessId result = new ProcessId();
             result.setEngineId(engineId.getEngineId());
-            result.setProcessId(bpelName);
+            result.setProcessId(processId);
 
             return result;
         } catch (IOException | SAXException | ParserConfigurationException | XPathExpressionException e) {
             throw new RuntimeException("errors in io", e);
         }
-
     }
 
     @Override
@@ -59,13 +64,25 @@ public class UniformProcessDeploymentImpl implements UniformProcessDeployment {
     }
 
     @Override
-    public boolean isDeployed(ProcessId processId) {
-        return false;
+    public ProcessId[] getDeployedProcesses(EngineId engineId) {
+        return new ProcessId[0];
+    }
+
+    @Override
+    public ProcessId[] getDeployedProcesses() {
+        return new ProcessId[0];
+    }
+
+    @Override
+    public boolean isProcessDeployed(ProcessId processId) {
+        LocalEngine engine = EngineHelper.getLocalEngine(processId);
+        return engine.isDeployed(processId.getProcessId());
     }
 
     @Override
     public void undeploy(ProcessId processId) {
-
+        LocalEngine engine = EngineHelper.getLocalEngine(processId);
+        engine.undeploy(processId.getProcessId());
     }
 
 }

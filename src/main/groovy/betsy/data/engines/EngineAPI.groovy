@@ -2,6 +2,7 @@ package betsy.data.engines
 
 import betsy.data.BetsyProcess
 
+import javax.xml.namespace.QName
 import java.nio.file.Path;
 
 interface EngineAPI extends EngineLifecycle {
@@ -20,7 +21,7 @@ interface EngineAPI extends EngineLifecycle {
      * @param name the name of the BPEL process
      * @param process the path to the archive to be deployed
      */
-    void deploy(String name, Path process)
+    void deploy(QName name, Path process)
 
     /**
      * Build archives required for deployment.
@@ -44,4 +45,7 @@ interface EngineAPI extends EngineLifecycle {
      */
     void copyLogsIntoFolder(Path targetFolder)
 
+    void undeploy(QName processId)
+
+    boolean isDeployed(QName name)
 }

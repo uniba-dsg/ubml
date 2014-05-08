@@ -7,6 +7,7 @@ import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
 import betsy.tasks.WaitTasks
 
+import javax.xml.namespace.QName
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -82,20 +83,11 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
 
     @Override
     boolean isRunning() {
-        try {
-            ant.fail(message: "server for engine ${this} is still running") {
-                condition() {
-                    http url: CHECK_URL
-                }
-            }
-            return false;
-        } catch (Exception ignore) {
-            return true;
-        }
+        return isUrlAvailable(CHECK_URL);
     }
 
     @Override
-    void deploy(String name, Path process) {
+    void deploy(QName name, Path process) {
         //opy(process.getTargetPackageFilePath(), getDeploymentDir().resolve(process.getTargetPackageFilePath().getFileName()))
         copy(process, getDeploymentDir().resolve(process.getFileName()))
 
@@ -142,5 +134,15 @@ class Wso2Engine_v3_1_0 extends LocalEngine {
         ant.copy(todir: process) {
             ant.fileset(dir: getLogsFolder())
         }
+    }
+
+    @Override
+    void undeploy(QName processId) {
+
+    }
+
+    @Override
+    boolean isDeployed(QName name) {
+        return false
     }
 }

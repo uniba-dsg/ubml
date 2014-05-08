@@ -114,6 +114,41 @@ public class ZipFileHelper {
         return nl.item(0).getTextContent();
     }
 
+    public static String findBpelTargetNameSpaceInPath(Path path) throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
+        if(Files.isDirectory(path)) {
+            return findBpelTargetNameSpaceInPath(findBpelFileInPath(path));
+        }
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(path.toFile());
+        XPathFactory xPathfactory = XPathFactory.newInstance();
+        XPath xpath = xPathfactory.newXPath();
+        xpath.setNamespaceContext( new NamespaceContext() {
+            @Override
+            public String getNamespaceURI(String prefix) {
+                if("bpel".equals(prefix)) {
+                    return "http://docs.oasis-open.org/wsbpel/2.0/process/executable";
+                }
+                return null;
+            }
+
+            @Override
+            public String getPrefix(String namespaceURI) {
+                return null;
+            }
+
+            @Override
+            public Iterator getPrefixes(String namespaceURI) {
+                return null;
+            }
+        });
+        XPathExpression expr = xpath.compile("/bpel:process/@targetNamespace");
+        NodeList nl = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+
+        return nl.item(0).getTextContent();
+    }
+
     public static void adjustFileNameOfBpelToProcessName(Path folder) throws IOException, XPathExpressionException, SAXException, ParserConfigurationException {
         Path bpelFile = findBpelFileInPath(folder);
         String processName = findBpelProcessNameInPath(bpelFile);

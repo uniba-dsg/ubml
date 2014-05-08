@@ -6,13 +6,14 @@ import betsy.data.engines.LocalEngine
 import betsy.data.engines.tomcat.Tomcat
 import betsy.tasks.FileTasks
 
+import javax.xml.namespace.QName
 import java.nio.file.Path
 
 class BpelgEngine extends LocalEngine {
 
     @Override
     String getName() {
-        "bpelg"
+        return "bpelg";
     }
 
     Path getDeploymentDir() {
@@ -25,6 +26,16 @@ class BpelgEngine extends LocalEngine {
         ant.copy(todir: process) {
             ant.fileset(dir: tomcat.tomcatLogsDir)
         }
+    }
+
+    @Override
+    void undeploy(QName processId) {
+
+    }
+
+    @Override
+    boolean isDeployed(QName name) {
+        return false
     }
 
     @Override
@@ -63,8 +74,8 @@ class BpelgEngine extends LocalEngine {
     }
 
     @Override
-    void deploy(String name, Path process) {
-        new BpelgDeployer(processName: name,
+    void deploy(QName name, Path process) {
+        new BpelgDeployer(processName: name.getLocalPart(),
                 packageFilePath: process, //.targetPackageFilePath,
                 deploymentDirPath: getDeploymentDir(),
                 logFilePath: tomcat.tomcatLogsDir.resolve("bpelg.log")

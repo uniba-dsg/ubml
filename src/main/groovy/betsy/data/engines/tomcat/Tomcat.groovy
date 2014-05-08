@@ -18,7 +18,7 @@ class Tomcat {
 
     /**
      * The directory in which the tomcat has its directory.
-     * Should contain a directory called <code>apache-tomcat-7.0.26</code>
+     * Should contain a directory called <code>apache-tomcat-7.0.53</code>
      */
     Path engineDir
 

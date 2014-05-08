@@ -32,7 +32,7 @@ class OpenEsbCLI {
         glassfishHome.resolve("bin")
     }
 
-    void forceRedeploy(String processName, Path packageFilePath, Path tmpFolder) {
+    void deploy(String processName, Path packageFilePath, Path tmpFolder) {
         log.info("Deploying ${processName} from ${packageFilePath}")
 
         Path deployCommands = tmpFolder.resolve("deploy_commands.txt")
@@ -42,6 +42,20 @@ class OpenEsbCLI {
 
         String scriptContent = "deploy-jbi-service-assembly ${packageFilePathUnixStyle}\n"
         scriptContent += "start-jbi-service-assembly ${processName}Application\n"
+
+        FileTasks.createFile(deployCommands, scriptContent);
+
+        ConsoleTasks.executeOnWindowsAndIgnoreError(ConsoleTasks.CliCommand.build(asAdminWindows).values("multimode", "--file", deployCommands.toAbsolutePath().toString()))
+        ConsoleTasks.executeOnUnixAndIgnoreError(ConsoleTasks.CliCommand.build(asAdminUnix).values("multimode", "--file", deployCommands.toAbsolutePath().toString()))
+    }
+
+    void undeploy(String processName, Path packageFilePath, Path tmpFolder) {
+        log.info("Deploying ${processName} from ${packageFilePath}")
+
+        Path deployCommands = tmpFolder.resolve("undeploy_commands.txt")
+
+        String scriptContent = "stop-jbi-service-assembly ${processName}Application\n"
+        scriptContent += "undeploy-jbi-service-assembly ${processName}Application\n"
 
         FileTasks.createFile(deployCommands, scriptContent);
 

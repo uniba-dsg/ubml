@@ -1,7 +1,9 @@
 package betsy.api.model
 
+import javax.xml.namespace.QName
+
 class EngineId                     { String engineId;   }
-class ProcessId  extends EngineId  { String processId;  }
+class ProcessId  extends EngineId  { QName processId;   }
 class InstanceId extends ProcessId { String instanceId; }
 class ZipFile { byte[] data; }
 class BpelPackage extends ZipFile { }
@@ -26,16 +28,17 @@ interface UniformEngineLifecycle {
 }
 interface UniformProcessDeployment {
     ProcessId deploy(EngineId engineId, DeployableBpelPackage bpelPackage);
-    DeployableBpelPackage makeDeployable(EngineId engineId, BpelPackage bpelPackage);
-    boolean isDeployed(ProcessId processId);
     void undeploy(ProcessId processId);
+    DeployableBpelPackage makeDeployable(EngineId engineId, BpelPackage bpelPackage);
+    ProcessId[] getDeployedProcesses(EngineId engineId);
+    ProcessId[] getDeployedProcesses();
+    boolean isProcessDeployed(ProcessId processId);
 }
 interface UniformEngineLogfileAccess {
     LogPackage retrieveLogFiles(EngineId engineId);
 }
 interface UniformProcessManagement {
     EndpointReference[] getEPRs(ProcessId processId);
-    ProcessId[] getProcesses(EngineId engineId);
 }
 
 
