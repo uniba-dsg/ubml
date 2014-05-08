@@ -24,20 +24,18 @@ class OdeDeployer implements EngineDeployer {
     public void deploy() {
         log.info this.toString()
 
-        Path deploymentIndicatorFile = deploymentDirPath.resolve("${processName}.deployed")
-        FileTasks.deleteFile(deploymentIndicatorFile)
 
-        Path deploymentProcessNameDirPath = deploymentDirPath.resolve(processName)
+        FileTasks.deleteFile(deploymentIndicator)
 
-        ant.unzip src: packageFilePath, dest: deploymentProcessNameDirPath
+        ant.unzip src: packageFilePath, dest: processFolder
 
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("--recursive", "777",
-                deploymentProcessNameDirPath.toString()))
+                processFolder.toString()))
 
         String timeoutProperty = UUID.randomUUID();
         ant.waitfor(maxwait: timeoutInSeconds, maxwaitunit: "second", timeoutProperty: timeoutProperty) {
             and {
-                available file: deploymentIndicatorFile
+                available file: deploymentIndicator
                 or {
                     resourcecontains(resource: logFilePath, substring: "Deployment of artifact $processName successful")
                     resourcecontains(resource: logFilePath, substring: "Deployment of $processName failed")
@@ -51,8 +49,19 @@ class OdeDeployer implements EngineDeployer {
     void undeploy() {
         log.info "UNDEPLOYING " + this.toString()
 
-        FileTasks.deleteDirectory(deploymentDirPath.resolve(processName))
-        FileTasks.deleteFile(getDeploymentIndicator())
+        FileTasks.deleteDirectory(getProcessFolder())
+
+        String timeoutProperty = UUID.randomUUID();
+        ant.waitfor(maxwait: timeoutInSeconds, maxwaitunit: "second", timeoutProperty: timeoutProperty) {
+            not {
+                available file: deploymentIndicator
+            }
+        }
+        ant.fail(message: "not deployed", if: timeoutProperty)
+    }
+
+    private Path getProcessFolder() {
+        deploymentDirPath.resolve(processName)
     }
 
     private Path getDeploymentIndicator() {
@@ -61,7 +70,7 @@ class OdeDeployer implements EngineDeployer {
 
     @Override
     boolean isDeployed() {
-        return Files.exists(getDeploymentIndicator())
+        return Files.exists(getDeploymentIndicator()) && Files.exists(processFolder)
     }
 
     @Override
