@@ -22,7 +22,7 @@ class Tomcat {
      */
     Path engineDir
 
-    String tomcatName = "apache-tomcat-7.0.26"
+    String tomcatName = "apache-tomcat-7.0.53"
 
     Path getTomcatDir() {
         engineDir.resolve(tomcatName)
@@ -60,7 +60,7 @@ class Tomcat {
     /**
      * Throw exception if the tomcat is still running.
      */
-    void checkIfIsRunning() {
+    void failIfIsRunning() {
         ant.fail(message: "tomcat for engine ${engineDir} is still running") {
             condition() {
                 http url: tomcatUrl

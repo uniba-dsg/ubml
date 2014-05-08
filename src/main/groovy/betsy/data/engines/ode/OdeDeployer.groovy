@@ -33,17 +33,17 @@ class OdeDeployer implements EngineDeployer {
         ConsoleTasks.executeOnUnix(ConsoleTasks.CliCommand.build("chmod").values("--recursive", "777",
                 deploymentProcessNameDirPath.toString()))
 
-        ant.sequential() {
-            ant.waitfor(maxwait: timeoutInSeconds, maxwaitunit: "second") {
-                and {
-                    available file: deploymentIndicatorFile
-                    or {
-                        resourcecontains(resource: logFilePath, substring: "Deployment of artifact $processName successful")
-                        resourcecontains(resource: logFilePath, substring: "Deployment of $processName failed")
-                    }
+        String timeoutProperty = UUID.randomUUID();
+        ant.waitfor(maxwait: timeoutInSeconds, maxwaitunit: "second", timeoutProperty: timeoutProperty) {
+            and {
+                available file: deploymentIndicatorFile
+                or {
+                    resourcecontains(resource: logFilePath, substring: "Deployment of artifact $processName successful")
+                    resourcecontains(resource: logFilePath, substring: "Deployment of $processName failed")
                 }
             }
         }
+        ant.fail(message: "not deployed", if: timeoutProperty)
     }
 
     @Override

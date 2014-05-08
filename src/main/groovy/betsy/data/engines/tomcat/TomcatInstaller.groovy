@@ -14,9 +14,9 @@ class TomcatInstaller {
     Path destinationDir
     String additionalVmParam = ""
 
-    String tomcatArchiveFileName = "apache-tomcat-7.0.26-windows-x64.zip"
-    String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/apache-tomcat-7.0.26-windows-x64.zip"
-    String tomcatName = "apache-tomcat-7.0.26"
+    String tomcatArchiveFileName = "apache-tomcat-7.0.53-windows-x64.zip"
+    String downloadUrl = "https://lspi.wiai.uni-bamberg.de/svn/betsy/apache-tomcat-7.0.53-windows-x64.zip"
+    String tomcatName = "apache-tomcat-7.0.53"
 
     public void install() {
         FileTasks.mkdirs(Configuration.downloadsDir)

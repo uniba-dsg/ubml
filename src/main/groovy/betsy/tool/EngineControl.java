@@ -51,11 +51,11 @@ public class EngineControl extends JFrame {
 
             panel.add(createButton("install", engine, engine::install));
             panel.add(createButton("uninstall", engine, engine::uninstall));
-            panel.add(createButton("isInstalled?", engine, () -> JOptionPane.showMessageDialog(this, engine.isInstalled())));
+            panel.add(createButton("isInstalled?", engine, () -> toast(engine.getName() + " is " + (engine.isInstalled() ? "installed" : "uninstalled"))));
 
             panel.add(createButton("startup", engine, engine::startup));
             panel.add(createButton("shutdown", engine, engine::shutdown));
-            panel.add(createButton("isStarted?", engine, () -> JOptionPane.showMessageDialog(this, engine.isInstalled())));
+            panel.add(createButton("isStarted?", engine, () -> toast(engine.getName() + " is " + (engine.isRunning() ? "started" : "shutdown"))));
         }
 
         addEmptyRow(panel, columns);

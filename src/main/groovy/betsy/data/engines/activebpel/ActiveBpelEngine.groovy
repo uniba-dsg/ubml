@@ -65,7 +65,7 @@ class ActiveBpelEngine extends LocalEngine {
     @Override
     boolean isRunning() {
         try {
-            tomcat.checkIfIsRunning()
+            tomcat.failIfIsRunning()
             return false;
         } catch (Exception ignore) {
             return true;
