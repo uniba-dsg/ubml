@@ -26,10 +26,12 @@ public class CLIMain {
         //testProvisioningAndLifecycle();
         //testLogPackages();
 
-        testDeployment();
+        testDeployment(SEQUENCE_FOLDER);
+        testDeployment(VALIDATE_FOLDER);
+        testDeployment(SEQUENCE_FOLDER);
     }
 
-    private static void testDeployment() throws IOException {
+    private static void testDeployment(Path folder) throws IOException {
         EngineId engineId = new EngineId();
         engineId.setEngineId("ode");
 
@@ -43,13 +45,9 @@ public class CLIMain {
         }
 
         UniformProcessDeployment processDeployment = new UniformProcessDeploymentImpl();
-        DeployableBpelPackage deployableBpelPackage = processDeployment.makeDeployable(engineId, ZipFileHelper.zipToBpel(ZipFileHelper.buildFromFolder(SEQUENCE_FOLDER)));
+        DeployableBpelPackage deployableBpelPackage = processDeployment.makeDeployable(engineId, ZipFileHelper.zipToBpel(ZipFileHelper.buildFromFolder(folder)));
         System.out.println("Created deployable package");
         System.out.println("Deployed process: " + IdHelper.toString(processDeployment.deploy(engineId, deployableBpelPackage)));
-
-        if(engineLifecycle.isRunning(engineId)) {
-            engineLifecycle.stop(engineId);
-        }
     }
 
     private static void testLogPackages() throws IOException {
