@@ -1,13 +1,14 @@
 package betsy.data.engines.ode
 
 import ant.tasks.AntUtil
+import betsy.data.engines.EngineDeployer
 import betsy.tasks.ConsoleTasks
 import betsy.tasks.FileTasks
 import org.apache.log4j.Logger
 
 import java.nio.file.Path
 
-class OdeDeployer {
+class OdeDeployer implements EngineDeployer {
 
     private static final Logger log = Logger.getLogger(OdeDeployer.class)
 
@@ -45,6 +46,15 @@ class OdeDeployer {
         }
     }
 
+    @Override
+    void undeploy() {
+
+    }
+
+    @Override
+    boolean isDeployed() {
+        return false
+    }
 
     @Override
     public String toString() {

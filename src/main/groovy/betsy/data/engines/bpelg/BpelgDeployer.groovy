@@ -1,10 +1,11 @@
 package betsy.data.engines.bpelg
 
 import ant.tasks.AntUtil
+import betsy.data.engines.EngineDeployer
 
 import java.nio.file.Path
 
-class BpelgDeployer {
+class BpelgDeployer implements EngineDeployer{
 
     private static final AntBuilder ant = AntUtil.builder()
 
@@ -30,6 +31,15 @@ class BpelgDeployer {
         }
     }
 
+    @Override
+    void undeploy() {
+
+    }
+
+    @Override
+    boolean isDeployed() {
+        return false
+    }
 
     @Override
     public String toString() {

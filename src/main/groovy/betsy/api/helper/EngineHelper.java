@@ -1,6 +1,8 @@
 package betsy.api.helper;
 
 import betsy.api.model.EngineId;
+import betsy.data.engines.Engine;
+import betsy.data.engines.EngineAPI;
 import betsy.data.engines.LocalEngine;
 import betsy.data.engines.activebpel.ActiveBpelEngine;
 import betsy.data.engines.bpelg.BpelgEngine;
@@ -52,6 +54,16 @@ public class EngineHelper {
         engines.add(new Wso2Engine_v3_1_0());
         engines.add(new Wso2Engine_v3_0_0());
         engines.add(new Wso2Engine_v2_1_2());
+        return engines;
+    }
+
+    public static List<EngineAPI> getEngineAPIs() {
+        final List<LocalEngine> engineList = getAllEngines();
+
+        final List<EngineAPI> engines = new LinkedList<>();
+        for (Engine engine : engineList) {
+            engines.add(engine);
+        }
         return engines;
     }
 }
