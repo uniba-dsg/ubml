@@ -1,8 +1,8 @@
-package betsy.api.impl;
+package ubml.impl;
 
-import betsy.api.model.EngineId;
-import betsy.api.model.UniformEngineLifecycle;
-import betsy.api.helper.EngineHelper;
+import ubml.model.EngineId;
+import ubml.model.UniformEngineLifecycle;
+import ubml.helper.EngineHelper;
 
 import javax.jws.WebService;
 

@@ -1,6 +1,6 @@
-package betsy.api.helper;
+package ubml.helper;
 
-import betsy.api.model.EngineId;
+import ubml.model.EngineId;
 import betsy.data.engines.Engine;
 import betsy.data.engines.EngineAPI;
 import betsy.data.engines.LocalEngine;

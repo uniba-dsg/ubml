@@ -1,19 +1,20 @@
-package betsy.api.impl;
+package ubml.impl;
 
-import betsy.api.helper.EngineHelper;
-import betsy.api.helper.ZipFileHelper;
-import betsy.api.model.EngineId;
-import betsy.api.model.LogPackage;
-import betsy.api.model.UniformEngineLogfileAccess;
+import ubml.helper.EngineHelper;
+import ubml.helper.ZipFileHelper;
+import ubml.model.EngineId;
+import ubml.model.LogPackage;
+import ubml.model.UniformLogfileAccess;
 import betsy.data.engines.LocalEngine;
 import betsy.tasks.FileTasks;
 
+import javax.jws.WebService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-
-public class UniformEngineLogfileAccessImpl implements UniformEngineLogfileAccess {
+@WebService
+public class UniformLogfileAccessImpl implements UniformLogfileAccess {
 
     @Override
     public LogPackage retrieveLogFiles(EngineId engineId) {

@@ -1,9 +1,9 @@
-package betsy.api.helper;
+package ubml.helper;
 
-import betsy.api.model.BpelPackage;
-import betsy.api.model.DeployableBpelPackage;
-import betsy.api.model.LogPackage;
-import betsy.api.model.ZipFile;
+import ubml.model.BpelPackage;
+import ubml.model.DeployableBpelPackage;
+import ubml.model.LogPackage;
+import ubml.model.ZipFile;
 import betsy.tasks.ZipTasks;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -20,7 +20,6 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
 public class ZipFileHelper {

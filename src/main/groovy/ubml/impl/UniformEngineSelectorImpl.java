@@ -1,10 +1,10 @@
-package betsy.api.impl;
+package ubml.impl;
 
-import betsy.api.model.BpelPackage;
-import betsy.api.model.EngineId;
-import betsy.api.model.UniformEngineSelector;
-import betsy.api.helper.EngineHelper;
-import betsy.api.helper.ZipFileHelper;
+import ubml.model.BpelPackage;
+import ubml.model.EngineId;
+import ubml.model.UniformEngineSelector;
+import ubml.helper.EngineHelper;
+import ubml.helper.ZipFileHelper;
 import betsy.data.engines.Engine;
 
 import javax.jws.WebService;
@@ -44,7 +44,7 @@ public class UniformEngineSelectorImpl implements UniformEngineSelector {
         }
     }
 
-    public EngineId getMatchingEngine(Path bpelFile) {
+    private EngineId getMatchingEngine(Path bpelFile) {
         List<String> matchedEngines = getMatchingEngineByConformance(bpelFile);
 
         if (matchedEngines.isEmpty()) {

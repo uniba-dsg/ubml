@@ -1,8 +1,7 @@
-package betsy.api.helper;
+package ubml.helper;
 
-import betsy.api.model.EngineId;
-import betsy.api.model.InstanceId;
-import betsy.api.model.ProcessId;
+import ubml.model.EngineId;
+import ubml.model.ProcessId;
 
 import java.util.stream.Stream;
 
@@ -20,15 +19,7 @@ public class IdHelper {
         return s.getEngineId() + "/" + s.getProcessId();
     }
 
-    public static String toString(InstanceId s) {
-        return s.getEngineId() + "/" + s.getProcessId() + "/" + s.getInstanceId();
-    }
-
     public static String[] idsToString(ProcessId[] ids) {
-        return Stream.of(ids).map(IdHelper::toString).toArray(String[]::new);
-    }
-
-    public static String[] idsToString(InstanceId[] ids) {
         return Stream.of(ids).map(IdHelper::toString).toArray(String[]::new);
     }
 

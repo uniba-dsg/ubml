@@ -1,12 +1,13 @@
-package betsy.api.impl;
+package ubml.impl;
 
-import betsy.api.helper.EngineHelper;
-import betsy.api.helper.ZipFileHelper;
-import betsy.api.model.*;
+import ubml.helper.EngineHelper;
+import ubml.helper.ZipFileHelper;
+import ubml.model.*;
 import betsy.data.BetsyProcess;
 import betsy.data.engines.LocalEngine;
 import org.xml.sax.SAXException;
 
+import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@WebService
 public class UniformProcessDeploymentImpl implements UniformProcessDeployment {
 
     @Override
@@ -65,11 +67,6 @@ public class UniformProcessDeploymentImpl implements UniformProcessDeployment {
 
     @Override
     public ProcessId[] getDeployedProcesses(EngineId engineId) {
-        return new ProcessId[0];
-    }
-
-    @Override
-    public ProcessId[] getDeployedProcesses() {
         return new ProcessId[0];
     }
 

@@ -1,21 +1,17 @@
-package betsy.api.ws;
+package ubml.cli;
 
-import betsy.api.impl.*;
-import betsy.api.model.*;
-import betsy.api.helper.IdHelper;
-import betsy.api.helper.ZipFileHelper;
+import ubml.impl.*;
+import ubml.model.*;
+import ubml.helper.IdHelper;
+import ubml.helper.ZipFileHelper;
 import betsy.tasks.WaitTasks;
 import bpp.executables.EngineSelector;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.stream.Stream;
 
 public class CLIMain {
 
@@ -68,7 +64,7 @@ public class CLIMain {
         engineLifecycle.start(ode);
         engineLifecycle.stop(ode);
 
-        UniformEngineLogfileAccess logfileAccess = new UniformEngineLogfileAccessImpl();
+        UniformLogfileAccess logfileAccess = new UniformLogfileAccessImpl();
         LogPackage logPackage = logfileAccess.retrieveLogFiles(ode);
 
         Path path = ZipFileHelper.extractIntoTemporaryFolder(logPackage);
