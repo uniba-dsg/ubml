@@ -25,7 +25,9 @@ public class CLIMain {
         //testProvisioningAndLifecycle();
         //testLogPackages();
 
-        testDeployment(SEQUENCE_FOLDER);
+        System.out.println(Arrays.toString(IdHelper.idsToString(new UniformEngineSelectorImpl().getEngines())));
+
+        //testDeployment(SEQUENCE_FOLDER);
     }
 
     private static void testDeployment(Path folder) throws IOException {

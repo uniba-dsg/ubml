@@ -6,4 +6,5 @@ downloads/
 *.log
 server/
 test/
+build/
 .gradle/
