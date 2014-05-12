@@ -1,13 +1,13 @@
 package ubml.impl;
 
 import ubml.model.EngineId;
-import ubml.model.UniformEngineProvisioner;
+import ubml.model.UniformEngineProvisioning;
 import ubml.helper.EngineHelper;
 
 import javax.jws.WebService;
 
 @WebService
-public class UniformEngineProvisionerImpl implements UniformEngineProvisioner {
+public class UniformEngineProvisioningImpl implements UniformEngineProvisioning {
 
     @Override
     public void install(EngineId engineId) {

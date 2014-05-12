@@ -2,7 +2,7 @@ package ubml.impl;
 
 import ubml.model.BpelPackage;
 import ubml.model.EngineId;
-import ubml.model.UniformEngineSelector;
+import ubml.model.UniformEngineSelection;
 import ubml.helper.EngineHelper;
 import ubml.helper.ZipFileHelper;
 import betsy.data.engines.Engine;
@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 @WebService
-public class UniformEngineSelectorImpl implements UniformEngineSelector {
+public class UniformEngineSelectionImpl implements UniformEngineSelection {
 
     @Override
     public EngineId getEngine(String name) {

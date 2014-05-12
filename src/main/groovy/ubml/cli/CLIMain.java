@@ -25,7 +25,7 @@ public class CLIMain {
         //testProvisioningAndLifecycle();
         //testLogPackages();
 
-        System.out.println(Arrays.toString(IdHelper.idsToString(new UniformEngineSelectorImpl().getEngines())));
+        System.out.println(Arrays.toString(IdHelper.idsToString(new UniformEngineSelectionImpl().getEngines())));
 
         //testDeployment(SEQUENCE_FOLDER);
     }
@@ -39,7 +39,7 @@ public class CLIMain {
             engineLifecycle.stop(engineId);
         }
 
-        UniformEngineProvisioner provisioner = new UniformEngineProvisionerImpl();
+        UniformEngineProvisioning provisioner = new UniformEngineProvisioningImpl();
         provisioner.install(engineId);
         engineLifecycle.start(engineId);
 
@@ -60,7 +60,7 @@ public class CLIMain {
         EngineId ode = new EngineId();
         ode.setEngineId("ode");
 
-        UniformEngineProvisioner provisioner = new UniformEngineProvisionerImpl();
+        UniformEngineProvisioning provisioner = new UniformEngineProvisioningImpl();
         provisioner.install(ode);
         UniformEngineLifecycle engineLifecycle = new UniformEngineLifecycleImpl();
         engineLifecycle.start(ode);
@@ -77,7 +77,7 @@ public class CLIMain {
         EngineId bpelg = new EngineId();
         bpelg.setEngineId("bpelg");
 
-        UniformEngineProvisioner provisioner = new UniformEngineProvisionerImpl();
+        UniformEngineProvisioning provisioner = new UniformEngineProvisioningImpl();
         System.out.println("bpelg isInstalled: " + provisioner.isInstalled(bpelg));
         provisioner.install(bpelg);
         System.out.println("bpelg isInstalled: " + provisioner.isInstalled(bpelg));
@@ -97,7 +97,7 @@ public class CLIMain {
     }
 
     private static void testUniformEngineSelector() throws IOException {
-        UniformEngineSelector selector = new UniformEngineSelectorImpl();
+        UniformEngineSelection selector = new UniformEngineSelectionImpl();
         System.out.println(Arrays.toString(IdHelper.idsToString(selector.getEngines())));
         System.out.println(IdHelper.toString(selector.getMatchingEngine(ZipFileHelper.zipToBpel(ZipFileHelper.buildFromFolder(SEQUENCE_FOLDER)))));
         System.out.println(IdHelper.toString(selector.getEngine("ode")));

@@ -1,6 +1,6 @@
 package ubml.model;
 
-public interface UniformEngineSelector {
+public interface UniformEngineSelection {
     public abstract EngineId getEngine(String name);
 
     public abstract EngineId[] getEngines();
