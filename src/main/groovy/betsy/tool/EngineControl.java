@@ -28,7 +28,7 @@ public class EngineControl extends JFrame {
         this.setLayout(new BorderLayout());
         this.add(createCenterPanel(), BorderLayout.CENTER);
         JList<String> comp = new JList<>(actions);
-        comp.setVisibleRowCount(10);
+        comp.setVisibleRowCount(4);
         this.add(new JScrollPane(comp), BorderLayout.NORTH);
 
         this.setSize(800, 1000);
@@ -55,11 +55,11 @@ public class EngineControl extends JFrame {
             panel.add(createButton("uninstall", engine, engine::uninstall));
             panel.add(createButton("isInstalled?", engine, () -> toast(engine.getName() + " is " + (engine.isInstalled() ? "installed" : "uninstalled"))));
 
-            panel.add(createButton("startup", engine, engine::startup));
-            panel.add(createButton("shutdown", engine, engine::shutdown));
-            panel.add(createButton("isStarted?", engine, () -> toast(engine.getName() + " is " + (engine.isRunning() ? "started" : "shutdown"))));
+            panel.add(createButton("start", engine, engine::startup));
+            panel.add(createButton("stop", engine, engine::shutdown));
+            panel.add(createButton("isRunning?", engine, () -> toast(engine.getName() + " is " + (engine.isRunning() ? "started" : "shutdown"))));
 
-            panel.add(createButton("accessLogs", engine, () -> {
+            panel.add(createButton("retrieveLogFiles", engine, () -> {
                 Path path = null;
                 try {
                     path = Files.createTempDirectory("logs");
