@@ -1,8 +1,8 @@
 package betsy.tool;
 
-import ubml.helper.EngineHelper;
 import betsy.data.engines.EngineAPI;
 import betsy.data.engines.EngineLifecycle;
+import ubml.helper.EngineHelper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,11 +20,17 @@ public class EngineControl extends JFrame {
 
     private final DefaultListModel<String> actions = new DefaultListModel<>();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+
+        UIManager.setLookAndFeel(
+                UIManager.getSystemLookAndFeelClassName());
+
         new EngineControl().setVisible(true);
     }
 
     public EngineControl() {
+
+
         this.setLayout(new BorderLayout());
         this.add(createCenterPanel(), BorderLayout.CENTER);
         JList<String> comp = new JList<>(actions);
@@ -128,7 +134,7 @@ public class EngineControl extends JFrame {
     }
 
     private void addEmptyRow(JPanel panel, int columns) {
-        for(int i = 0; i < columns; i++){
+        for (int i = 0; i < columns; i++) {
             panel.add(new JLabel());
         }
     }
